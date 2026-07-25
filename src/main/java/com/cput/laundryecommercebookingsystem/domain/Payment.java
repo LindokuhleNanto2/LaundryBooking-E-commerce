@@ -1,6 +1,6 @@
 package com.cput.laundryecommercebookingsystem.domain;
 
-
+// 222665963 Libolwetu Nokenke
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -14,7 +14,6 @@ public class Payment {
     private int bookingId;
     private int orderId;
     private int serviceId;
-
     private Payment(Builder builder) {
         this.paymentId = builder.paymentId;
         this.amount = builder.amount;
@@ -26,43 +25,33 @@ public class Payment {
         this.orderId = builder.orderId;
         this.serviceId = builder.serviceId;
     }
-
     public int getPaymentId() {
         return paymentId;
     }
-
     public double getAmount() {
         return amount;
     }
-
     public LocalDateTime getPaymentDate() {
         return paymentDate;
     }
-
     public String getPaymentMethod() {
         return paymentMethod;
     }
-
     public String getStatus() {
         return status;
     }
-
     public String getTransactionRef() {
         return transactionRef;
     }
-
     public int getBookingId() {
         return bookingId;
     }
-
     public int getOrderId() {
         return orderId;
     }
-
     public int getServiceId() {
         return serviceId;
     }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -78,13 +67,11 @@ public class Payment {
                 Objects.equals(status, payment.status) &&
                 Objects.equals(transactionRef, payment.transactionRef);
     }
-
     @Override
     public int hashCode() {
         return Objects.hash(paymentId, amount, paymentDate, paymentMethod,
                 status, transactionRef, bookingId, orderId, serviceId);
     }
-
     @Override
     public String toString() {
         return "Payment{" +
@@ -99,7 +86,6 @@ public class Payment {
                 ", serviceId=" + serviceId +
                 '}';
     }
-
     public static class Builder {
         private int paymentId;
         private double amount;
@@ -115,47 +101,38 @@ public class Payment {
             this.paymentId = paymentId;
             return this;
         }
-
         public Builder setAmount(double amount) {
             this.amount = amount;
             return this;
         }
-
         public Builder setPaymentDate(LocalDateTime paymentDate) {
             this.paymentDate = paymentDate;
             return this;
         }
-
         public Builder setPaymentMethod(String paymentMethod) {
             this.paymentMethod = paymentMethod;
             return this;
         }
-
         public Builder setStatus(String status) {
             this.status = status;
             return this;
         }
-
         public Builder setTransactionRef(String transactionRef) {
             this.transactionRef = transactionRef;
             return this;
         }
-
         public Builder setBookingId(int bookingId) {
             this.bookingId = bookingId;
             return this;
         }
-
         public Builder setOrderId(int orderId) {
             this.orderId = orderId;
             return this;
         }
-
         public Builder setServiceId(int serviceId) {
             this.serviceId = serviceId;
             return this;
         }
-
         public Payment build() {
             return new Payment(this);
         }
