@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
+ *
  * Notification entity — represents a message sent to a student informing
  * them of a system event (booking confirmed/cancelled, order complete,
  * payment confirmed, etc.). Matches UML class 12: NOTIFICATION.
