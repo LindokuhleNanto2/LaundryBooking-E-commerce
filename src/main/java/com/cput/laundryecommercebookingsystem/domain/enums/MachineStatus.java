@@ -1,4 +1,4 @@
-package com.cput.laundryecommercebookingsystem.domain;
+package com.cput.laundryecommercebookingsystem.domain.enums;
 
 public enum MachineStatus {
 
