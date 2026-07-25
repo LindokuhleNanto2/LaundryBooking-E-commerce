@@ -1,3 +1,10 @@
+/**
+ * Notification.java
+ * Muso Nkuntsu
+ * 231223722
+ * Date: 25 July 2026
+ */
+
 package com.cput.laundryecommercebookingsystem.domain;
 
 import com.cput.laundryecommercebookingsystem.domain.enums.NotificationType;
@@ -116,7 +123,7 @@ public class Notification {
     public String toString() {
         return "Notification{" +
                 "id=" + id +
-                ", student=" + (student != null ? student.getId() : null) +
+                ", student=" + (student != null ? student.getStudentId() : null) +
                 ", message='" + message + '\'' +
                 ", type=" + type +
                 ", dateSent=" + dateSent +
