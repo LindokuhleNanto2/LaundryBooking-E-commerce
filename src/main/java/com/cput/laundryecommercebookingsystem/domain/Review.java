@@ -1,52 +1,71 @@
 package com.cput.laundryecommercebookingsystem.domain;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+
+@Entity
+@Table(name = "reviews")
 public class Review {
 
-    private final int id;
-    private final Student student;
-    private final LaundryService target;
-    private final int rating;
-    private final String comment;
-    private final LocalDateTime date;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+
+    @ManyToOne
+    @JoinColumn(name = "student_id", nullable = false)
+    private Student student;
+
+
+    @ManyToOne
+    @JoinColumn(name = "service_id", nullable = false)
+    private LaundryService laundryService;
+    private int rating;
+    private String comment;
+    private LocalDateTime date;
+    protected Review() {
+    }
 
 
     private Review(Builder builder) {
-        this.id = builder.id;
         this.student = builder.student;
-        this.target = builder.target;
+        this.laundryService = builder.laundryService;
         this.rating = builder.rating;
         this.comment = builder.comment;
         this.date = builder.date;
     }
 
-
-    public int getId() {
-        return id;
+    public static Builder builder() {
+        return new Builder();
     }
 
+    public Long getId() {
+        return id;
+    }
 
     public Student getStudent() {
         return student;
     }
 
-
-    public LaundryService getTarget() {
-        return target;
+    public LaundryService getLaundryService() {
+        return laundryService;
     }
-
 
     public int getRating() {
         return rating;
     }
 
-
     public String getComment() {
         return comment;
     }
-
 
     public LocalDateTime getDate() {
         return date;
@@ -55,6 +74,7 @@ public class Review {
 
     @Override
     public boolean equals(Object o) {
+
         if (this == o) {
             return true;
         }
@@ -65,25 +85,13 @@ public class Review {
 
         Review review = (Review) o;
 
-        return id == review.id
-                && rating == review.rating
-                && Objects.equals(student, review.student)
-                && Objects.equals(target, review.target)
-                && Objects.equals(comment, review.comment)
-                && Objects.equals(date, review.date);
+        return id != null && Objects.equals(id, review.id);
     }
 
 
     @Override
     public int hashCode() {
-        return Objects.hash(
-                id,
-                student,
-                target,
-                rating,
-                comment,
-                date
-        );
+        return getClass().hashCode();
     }
 
 
@@ -91,8 +99,6 @@ public class Review {
     public String toString() {
         return "Review{" +
                 "id=" + id +
-                ", student=" + student +
-                ", target=" + target +
                 ", rating=" + rating +
                 ", comment='" + comment + '\'' +
                 ", date=" + date +
@@ -102,43 +108,71 @@ public class Review {
 
     public static class Builder {
 
-        private int id;
         private Student student;
-        private LaundryService target;
+        private LaundryService laundryService;
         private int rating;
         private String comment;
         private LocalDateTime date;
 
 
-        public Builder(int id, Student student, LaundryService target) {
-            this.id = id;
+        public Builder student(Student student) {
             this.student = student;
-            this.target = target;
+            return this;
         }
 
+        public Builder laundryService(LaundryService laundryService) {
+            this.laundryService = laundryService;
+            return this;
+        }
 
         public Builder rating(int rating) {
             this.rating = rating;
             return this;
         }
 
-
         public Builder comment(String comment) {
             this.comment = comment;
             return this;
         }
-
 
         public Builder date(LocalDateTime date) {
             this.date = date;
             return this;
         }
 
-
-
         public Review build() {
+
+            if (student == null) {
+                throw new IllegalArgumentException(
+                        "Student is required"
+                );
+            }
+
+            if (laundryService == null) {
+                throw new IllegalArgumentException(
+                        "Laundry service is required"
+                );
+            }
+
+            if (rating < 1 || rating > 5) {
+                throw new IllegalArgumentException(
+                        "Rating must be between 1 and 5"
+                );
+            }
+
+            if (comment == null || comment.trim().isEmpty()) {
+                throw new IllegalArgumentException(
+                        "Review comment is required"
+                );
+            }
+
+            if (date == null) {
+                throw new IllegalArgumentException(
+                        "Review date is required"
+                );
+            }
+
             return new Review(this);
         }
     }
 }
-
