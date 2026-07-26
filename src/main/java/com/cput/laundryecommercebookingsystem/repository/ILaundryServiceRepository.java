@@ -3,11 +3,11 @@
  * Author: Snalo (230541844)
  * Date: 25 July 2026
  */
-package za.ac.cput.laundrybookingecommerce.repository;
+package com.cput.laundryecommercebookingsystem.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import za.ac.cput.laundrybookingecommerce.domain.LaundryService;
+import com.cput.laundryecommercebookingsystem.domain.LaundryService;
 
 /**
  * Spring Data JPA Repository interface for LaundryService entity persistence operations.

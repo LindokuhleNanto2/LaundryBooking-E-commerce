@@ -3,13 +3,13 @@
  * Author: Snalo (230541844)
  * Date: 25 July 2026
  */
-package za.ac.cput.laundrybookingecommerce.service.impl;
+package com.cput.laundryecommercebookingsystem.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import za.ac.cput.laundrybookingecommerce.domain.LaundryService;
-import za.ac.cput.laundrybookingecommerce.repository.ILaundryServiceRepository;
-import za.ac.cput.laundrybookingecommerce.service.ILaundryService;
+import com.cput.laundryecommercebookingsystem.domain.LaundryService;
+import com.cput.laundryecommercebookingsystem.repository.ILaundryServiceRepository;
+import com.cput.laundryecommercebookingsystem.service.ILaundryService;
 
 import java.util.List;
 

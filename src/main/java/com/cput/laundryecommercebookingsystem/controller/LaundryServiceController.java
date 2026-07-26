@@ -3,14 +3,14 @@
  * Author: Snalo (230541844)
  * Date: 25 July 2026
  */
-package za.ac.cput.laundrybookingecommerce.controller;
+package com.cput.laundryecommercebookingsystem.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import za.ac.cput.laundrybookingecommerce.domain.LaundryService;
-import za.ac.cput.laundrybookingecommerce.service.ILaundryService;
+import com.cput.laundryecommercebookingsystem.domain.LaundryService;
+import com.cput.laundryecommercebookingsystem.service.ILaundryService;
 
 import java.util.List;
 
