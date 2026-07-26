@@ -3,7 +3,7 @@
  * Author: Snalo (230541844)
  * Date: 25 July 2026
  */
-package za.ac.cput.laundrybookingecommerce.factory;
+package com.cput.laundryecommercebookingsystem.factory;
 
 import za.ac.cput.laundrybookingecommerce.domain.Product;
 import java.util.UUID;

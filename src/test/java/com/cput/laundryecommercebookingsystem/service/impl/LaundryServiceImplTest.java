@@ -3,8 +3,9 @@
  * Author: Snalo (230541844)
  * Date: 25 July 2026
  */
-package za.ac.cput.laundrybookingecommerce.service.impl;
+package com.cput.laundryecommercebookingsystem.service.impl;
 
+import com.cput.laundryecommercebookingsystem.service.impl.LaundryServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -12,8 +13,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import za.ac.cput.laundrybookingecommerce.domain.LaundryService;
-import za.ac.cput.laundrybookingecommerce.factory.LaundryServiceFactory;
+import com.cput.laundryecommercebookingsystem.domain.LaundryService;
+import com.cput.laundryecommercebookingsystem.factory.LaundryServiceFactory;
 
 import static org.junit.jupiter.api.Assertions.*;
 

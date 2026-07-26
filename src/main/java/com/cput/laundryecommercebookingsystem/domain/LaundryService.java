@@ -3,7 +3,7 @@
  * Author: Snalo (230541844)
  * Date: 25 July 2026
  */
-package za.ac.cput.laundrybookingecommerce.domain;
+package com.cput.laundryecommercebookingsystem.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

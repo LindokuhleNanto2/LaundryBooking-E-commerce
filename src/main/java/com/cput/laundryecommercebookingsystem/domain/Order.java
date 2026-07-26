@@ -1,4 +1,5 @@
 package com.cput.laundryecommercebookingsystem.domain;
+import com.cput.laundryecommercebookingsystem.domain.enums.OrderStatus;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
