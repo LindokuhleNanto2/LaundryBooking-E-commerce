@@ -1,19 +1,37 @@
 package com.cput.laundryecommercebookingsystem.domain;
 
 // 222665963 Libolwetu Nokenke
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@Entity
+@Table(name = "payments")
 public class Payment {
-    private int paymentId;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "payment_id")
+    private Long paymentId;
+    @Column(name = "amount")
     private double amount;
+    @Column(name = "payment_date")
     private LocalDateTime paymentDate;
+    @Column(name = "payment_method")
     private String paymentMethod;
+    @Column(name = "status")
     private String status;
+    @Column(name = "transaction_ref")
     private String transactionRef;
-    private int bookingId;
-    private int orderId;
-    private int serviceId;
+    @Column(name = "booking_id")
+    private Long bookingId;
+    @Column(name = "order_id")
+    private Long orderId;
+    @Column(name = "service_id")
+    private Long serviceId;
+
+    protected Payment() {
+    }
     private Payment(Builder builder) {
         this.paymentId = builder.paymentId;
         this.amount = builder.amount;
@@ -25,7 +43,12 @@ public class Payment {
         this.orderId = builder.orderId;
         this.serviceId = builder.serviceId;
     }
-    public int getPaymentId() {
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public Long getPaymentId() {
         return paymentId;
     }
     public double getAmount() {
@@ -43,13 +66,13 @@ public class Payment {
     public String getTransactionRef() {
         return transactionRef;
     }
-    public int getBookingId() {
+    public Long getBookingId() {
         return bookingId;
     }
-    public int getOrderId() {
+    public Long getOrderId() {
         return orderId;
     }
-    public int getServiceId() {
+    public Long getServiceId() {
         return serviceId;
     }
     @Override
@@ -57,11 +80,11 @@ public class Payment {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Payment payment = (Payment) o;
-        return paymentId == payment.paymentId &&
-                Double.compare(payment.amount, amount) == 0 &&
-                bookingId == payment.bookingId &&
-                orderId == payment.orderId &&
-                serviceId == payment.serviceId &&
+        return Double.compare(payment.amount, amount) == 0 &&
+                Objects.equals(paymentId, payment.paymentId) &&
+                Objects.equals(bookingId, payment.bookingId) &&
+                Objects.equals(orderId, payment.orderId) &&
+                Objects.equals(serviceId, payment.serviceId) &&
                 Objects.equals(paymentDate, payment.paymentDate) &&
                 Objects.equals(paymentMethod, payment.paymentMethod) &&
                 Objects.equals(status, payment.status) &&
@@ -87,17 +110,17 @@ public class Payment {
                 '}';
     }
     public static class Builder {
-        private int paymentId;
+        private Long paymentId;
         private double amount;
         private LocalDateTime paymentDate;
         private String paymentMethod;
         private String status;
         private String transactionRef;
-        private int bookingId;
-        private int orderId;
-        private int serviceId;
+        private Long bookingId;
+        private Long orderId;
+        private Long serviceId;
 
-        public Builder setPaymentId(int paymentId) {
+        public Builder setPaymentId(Long paymentId) {
             this.paymentId = paymentId;
             return this;
         }
@@ -121,15 +144,15 @@ public class Payment {
             this.transactionRef = transactionRef;
             return this;
         }
-        public Builder setBookingId(int bookingId) {
+        public Builder setBookingId(Long bookingId) {
             this.bookingId = bookingId;
             return this;
         }
-        public Builder setOrderId(int orderId) {
+        public Builder setOrderId(Long orderId) {
             this.orderId = orderId;
             return this;
         }
-        public Builder setServiceId(int serviceId) {
+        public Builder setServiceId(Long serviceId) {
             this.serviceId = serviceId;
             return this;
         }
