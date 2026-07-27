@@ -74,6 +74,12 @@ public class OrderItem {
         return subtotal;
     }
 
+    /*Assigns an Order to this OrderItem*/
+
+    void assignOrder(Order order) {
+        this.order = order;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
