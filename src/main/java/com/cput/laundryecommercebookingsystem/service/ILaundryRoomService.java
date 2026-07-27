@@ -10,7 +10,7 @@ import java.util.Optional;
  *  * 25 July 2026
  *  */
 
-public interface LaundryRoomService {
+public interface ILaundryRoomService {
 
     LaundryRoom createRoom(String roomNumber, String location, int capacity, String description);
 
