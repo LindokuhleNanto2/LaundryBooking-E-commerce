@@ -1,5 +1,6 @@
 package com.cput.laundryecommercebookingsystem.domain;
 
+import com.cput.laundryecommercebookingsystem.domain.enums.MachineStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

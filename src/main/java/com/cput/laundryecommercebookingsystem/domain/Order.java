@@ -1,4 +1,5 @@
 package com.cput.laundryecommercebookingsystem.domain;
+import com.cput.laundryecommercebookingsystem.domain.enums.OrderStatus;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -37,6 +38,13 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<OrderItem> orderItems = new ArrayList<>();
 
+    public void addOrderItem(OrderItem item) {
+        if (item != null) {
+            this.orderItems.add(item);
+            item.assignOrder(this);
+        }
+    }
+
     protected Order() {
     }
 
@@ -47,10 +55,10 @@ public class Order {
         this.status = builder.status;
         this.studentId = builder.studentId;
 
-        this.orderItems = new ArrayList<>(builder.orderItems);
+        this.orderItems = new ArrayList<>();
 
-        for (OrderItem item : this.orderItems) {
-            item.assignOrder(this);
+        for (OrderItem item : builder.orderItems) {
+            addOrderItem(item);
         }
     }
 
@@ -174,9 +182,6 @@ public class Order {
         public Order build() {
             if (studentId == null) {
                 throw new IllegalStateException("Order must be associated with a Student.");
-            }
-            if (orderItems.isEmpty()) {
-                throw new IllegalStateException("Order must contain at least one OrderItem.");
             }
             return new Order(this);
         }

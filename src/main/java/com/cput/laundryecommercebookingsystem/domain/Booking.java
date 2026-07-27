@@ -1,19 +1,31 @@
-package com.cput.laundryecommercebookingsystem.domain;
+/**
+ * Booking.java
+ * Muso Nkuntsu
+ * 231223722
+ * Date: 25 July 2026
+ */
 
+package com.cput.laundryecommercebookingsystem.domain;
 import com.cput.laundryecommercebookingsystem.domain.enums.BookingStatus;
 import jakarta.persistence.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-// Still not done with my Code, waitin gon the UML to know the relationship.
+/**
+ * Booking entity — represents a student's reservation of a laundry machine
+ * for a specific time slot, optionally attached to a laundry service.
+ *
+ * NOTE: LaundryRoom is intentionally NOT referenced directly here.
+ * A booking is tied to a specific LaundryMachine, and every machine
+ * already belongs to exactly one LaundryRoom. Storing roomId separately
+ * on Booking would risk inconsistent data (e.g. a booking's room field
+ * disagreeing with the room its machine actually belongs to). The room
+ * is always resolved via booking.getLaundryMachine().getLaundryRoom().
+ */
 @Entity
-@Table(name = "booking")
+@Table(name = "bookings")
 public class Booking {
 
-    private static final Logger log = LoggerFactory.getLogger(Booking.class);
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "booking_id")
@@ -26,65 +38,77 @@ public class Booking {
     @Column(name = "status", nullable = false)
     private BookingStatus status;
 
-    @Column(name  = "total_amount" , nullable = false)
+    @Column(name = "total_amount", nullable = false)
     private double totalAmount;
 
+    // FK: studentId — student who made the booking
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_id", nullable = false)
     private Student student;
 
+    // FK: machineId — the specific machine reserved (room is derived from this)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "machine_id", nullable = false)
-    private LauderyMachine laundryMachine;
+    private LaundryMachine laundryMachine;
 
+    // FK: timeSlotId — the reserved time slot
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "time_slot_id", nullable = false)
     private TimeSlot timeSlot;
 
-
+    // FK: serviceId — optional laundry service attached to this booking
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name  = "service_id")
+    @JoinColumn(name = "service_id")
     private LaundryService laundryService;
 
-    protected Booking(){}
-
-
-    @Override
-    public String toString() {
-        return "Booking{" +
-                "id=" + id +
-                ", bookingDate=" + bookingDate +
-                ", status=" + status +
-                ", totalAmount=" + totalAmount +
-                ", student=" + student +
-                ", laundryMachine=" + laundryMachine +
-                ", timeSlot=" + timeSlot +
-                ", laundryService=" + laundryService +
-                '}';
+    // Required no-arg constructor for JPA/Hibernate
+    protected Booking() {
     }
 
-    private Booking(Builder builder){
+    // Private constructor — instances are only created via the Builder
+    private Booking(Builder builder) {
         this.id = builder.id;
-        this.status = builder.status;
         this.bookingDate = builder.bookingDate;
-        this.laundryMachine = builder.laundryMachine;
+        this.status = builder.status;
         this.totalAmount = builder.totalAmount;
         this.student = builder.student;
         this.laundryMachine = builder.laundryMachine;
         this.timeSlot = builder.timeSlot;
+        this.laundryService = builder.laundryService;
     }
-    public static Builder builder(){
+
+    public static Builder builder() {
         return new Builder();
     }
-    public void createBooking(){
-            this.status = BookingStatus.CONFIRMED;
+
+    // ---------- Behaviour (per UML) ----------
+
+    /** Marks this booking as created/confirmed. */
+    public void createBooking() {
+        this.status = BookingStatus.CONFIRMED;
     }
-    public void cancelBooking(){
-            this.status = BookingStatus.CANCELLED;
+
+    /** Cancels this booking. */
+    public void cancelBooking() {
+        this.status = BookingStatus.CANCELLED;
     }
-    public void  updateStatus(BookingStatus newStatus){
+
+    /** Updates the booking's status to the given value. */
+    public void updateStatus(BookingStatus newStatus) {
         this.status = newStatus;
     }
+
+    /**
+     * Convenience accessor — resolves the LaundryRoom via this booking's
+     * machine, rather than storing a separate (and potentially
+     * inconsistent) room reference on Booking itself.
+     */
+    public LaundryRoom getLaundryRoom() {
+        return laundryMachine != null ? laundryMachine.getLaundryRoom() : null;
+    }
+
+    // ---------- Getters (no setters — immutable outside of behaviour methods) ----------
+
     public Long getId() {
         return id;
     }
@@ -105,7 +129,7 @@ public class Booking {
         return student;
     }
 
-    public LauderyMachine getLaundryMachine() {
+    public LaundryMachine getLaundryMachine() {
         return laundryMachine;
     }
 
@@ -116,61 +140,94 @@ public class Booking {
     public LaundryService getLaundryService() {
         return laundryService;
     }
-    public static class Builder{
+
+    // ---------- equals / hashCode / toString ----------
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Booking)) return false;
+        Booking booking = (Booking) o;
+        return Objects.equals(id, booking.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Booking{" +
+                "id=" + id +
+                ", bookingDate=" + bookingDate +
+                ", status=" + status +
+                ", totalAmount=" + totalAmount +
+                ", student=" + (student != null ? student.getId() : null) +
+                ", laundryMachine=" + (laundryMachine != null ? laundryMachine.getId() : null) +
+                ", timeSlot=" + (timeSlot != null ? timeSlot.getId() : null) +
+                ", laundryService=" + (laundryService != null ? laundryService.getId() : null) +
+                '}';
+    }
+
+    // ---------- Builder ----------
+
+    public static class Builder {
         private Long id;
         private LocalDateTime bookingDate;
         private BookingStatus status;
-        private double amount;
+        private double totalAmount;
         private Student student;
-        private LauderyMachine laundryMachine;
+        private LaundryMachine laundryMachine;
         private TimeSlot timeSlot;
         private LaundryService laundryService;
 
-        public Builder setId(Long id) {
+        public Builder id(Long id) {
             this.id = id;
             return this;
         }
 
-        public Builder setBookingDate(LocalDateTime bookingDate) {
+        public Builder bookingDate(LocalDateTime bookingDate) {
             this.bookingDate = bookingDate;
             return this;
         }
 
-        public Builder setStatus(BookingStatus status) {
+        public Builder status(BookingStatus status) {
             this.status = status;
             return this;
         }
 
-        public Builder setAmount(double amount) {
-            this.amount = amount;
+        public Builder totalAmount(double totalAmount) {
+            this.totalAmount = totalAmount;
             return this;
         }
 
-        public Builder setStudent(Student student) {
+        public Builder student(Student student) {
             this.student = student;
             return this;
         }
 
-        public Builder setLaundryMachine(LauderyMachine laundryMachine) {
+        public Builder laundryMachine(LaundryMachine laundryMachine) {
             this.laundryMachine = laundryMachine;
             return this;
         }
 
-        public Builder setTimeSlot(TimeSlot timeSlot) {
+        public Builder timeSlot(TimeSlot timeSlot) {
             this.timeSlot = timeSlot;
             return this;
         }
 
-        public Builder setLaundryService(LaundryService laundryService) {
+        public Builder laundryService(LaundryService laundryService) {
             this.laundryService = laundryService;
             return this;
         }
-        public Booking build(){
+
+        public Booking build() {
             Objects.requireNonNull(student, "student is required");
-            Objects.requireNonNull(laundryMachine, "LaundryMachine is required");
-            Objects.requireNonNull(timeSlot, "TimeSlot is required");
-            Objects.requireNonNull(bookingDate, "BookingDate is required");
-            Objects.requireNonNull(status, "Status is required");
+            Objects.requireNonNull(laundryMachine, "laundryMachine is required");
+            Objects.requireNonNull(timeSlot, "timeSlot is required");
+            Objects.requireNonNull(bookingDate, "bookingDate is required");
+            Objects.requireNonNull(status, "status is required");
             return new Booking(this);
         }
     }
