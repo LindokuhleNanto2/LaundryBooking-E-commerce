@@ -11,6 +11,13 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
+/**
+ * Lindokuhle Nanto
+ * 240443608
+ * 25 July 2026
+ */
+
+
 @Entity
 @Table(name = "laundry_machine")
 public class LaundryMachine {
