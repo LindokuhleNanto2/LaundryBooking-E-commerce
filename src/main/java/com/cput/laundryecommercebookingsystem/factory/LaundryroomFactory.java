@@ -1,6 +1,6 @@
 package com.cput.laundryecommercebookingsystem.factory;
 
-import com.cput.laundryecommercebookingsystem.domain.LaundryRoom;
+import com.cput.laundryecommercebookingsystem.domain.Laundryroom;
 import com.cput.laundryecommercebookingsystem.domain.Machine;
 
 import java.util.ArrayList;
