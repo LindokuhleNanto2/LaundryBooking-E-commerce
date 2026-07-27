@@ -102,8 +102,6 @@ public class LaundryRoom {
         machine.assignRoom(this);
     }
 
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
