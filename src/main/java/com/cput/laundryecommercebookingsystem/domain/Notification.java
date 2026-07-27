@@ -1,3 +1,10 @@
+/**
+ * Notification.java
+ * Muso Nkuntsu
+ * 231223722
+ * Date: 25 July 2026
+ */
+
 package com.cput.laundryecommercebookingsystem.domain;
 
 import com.cput.laundryecommercebookingsystem.domain.enums.NotificationType;
@@ -6,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
+ *
  * Notification entity — represents a message sent to a student informing
  * them of a system event (booking confirmed/cancelled, order complete,
  * payment confirmed, etc.). Matches UML class 12: NOTIFICATION.
@@ -116,7 +124,7 @@ public class Notification {
     public String toString() {
         return "Notification{" +
                 "id=" + id +
-                ", student=" + (student != null ? student.getId() : null) +
+                ", student=" + (student != null ? student.getStudentId() : null) +
                 ", message='" + message + '\'' +
                 ", type=" + type +
                 ", dateSent=" + dateSent +
