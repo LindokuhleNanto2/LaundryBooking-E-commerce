@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import com.cput.laundryecommercebookingsystem.domain.LaundryMachine;
 
 /**
  * Talent Nocuze
@@ -92,7 +91,7 @@ public class LaundryRoom {
     }
 
 
-    public void addMachine(LaundryMachine machine) {
+    public void addMachine(Machine machine) {
         if (machine == null) {
             throw new IllegalArgumentException("Machine must not be null.");
         }
