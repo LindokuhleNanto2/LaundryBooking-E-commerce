@@ -16,7 +16,7 @@ import java.util.Objects;
 @Table(name = "laundry_rooms")
 public class LaundryRoom {
 
-
+    // roomId : int (PK)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "room_id", nullable = false, updatable = false)
@@ -101,6 +101,8 @@ public class LaundryRoom {
         this.machines.add(machine);
         machine.assignRoom(this);
     }
+
+
 
     @Override
     public boolean equals(Object o) {
