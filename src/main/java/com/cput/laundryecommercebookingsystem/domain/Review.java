@@ -10,6 +10,12 @@ import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+/**
+ * Lindokuhle Nanto
+ * 240443608
+ * 25 July 2026
+ */
+
 
 @Entity
 @Table(name = "reviews")

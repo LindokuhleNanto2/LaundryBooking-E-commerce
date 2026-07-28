@@ -1,6 +1,6 @@
 package com.cput.laundryecommercebookingsystem.factory;
 
-import com.cput.laundryecommercebookingsystem.domain.Laundryroom;
+import com.cput.laundryecommercebookingsystem.domain.LaundryRoom;
 import com.cput.laundryecommercebookingsystem.domain.Machine;
 import org.junit.jupiter.api.Test;
 
@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * 230405886
  * 25 July 2026
  */
+
 class LaundryRoomFactoryTest {
 
     @Test
@@ -48,7 +49,7 @@ class LaundryRoomFactoryTest {
                 "Room 2C", "East Wing", 4, "Has machines", machines);
 
         assertEquals(2, room.getMachines().size());
-        // relationship must be set on both sides
+
         for (Machine machine : room.getMachines()) {
             assertEquals(room, machine.getRoom());
         }
