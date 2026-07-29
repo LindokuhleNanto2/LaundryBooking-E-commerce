@@ -6,7 +6,7 @@ import com.cput.laundryecommercebookingsystem.domain.Student;
 import com.cput.laundryecommercebookingsystem.factory.ReviewFactory;
 import com.cput.laundryecommercebookingsystem.repository.IReviewRepository;
 import com.cput.laundryecommercebookingsystem.repository.ILaundryServiceRepository;
-import com.cput.laundryecommercebookingsystem.repository.IStudentRepository;
+import com.cput.laundryecommercebookingsystem.repository.StudentRepository;
 import com.cput.laundryecommercebookingsystem.service.IReviewService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,32 +17,28 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 /**
+ * ReviewServiceImpl.java
+ *
  * Lindokuhle Nanto
  * 240443608
  * 28 July 2026
  */
 
 @Service
-public class ReviewServiceImpl
-        implements IReviewService {
+public class ReviewServiceImpl implements IReviewService {
 
     private final IReviewRepository reviewRepository;
-    private final IStudentRepository studentRepository;
+    private final StudentRepository studentRepository;
     private final ILaundryServiceRepository laundryServiceRepository;
 
     public ReviewServiceImpl(
             IReviewRepository reviewRepository,
-            IStudentRepository studentRepository,
+            StudentRepository studentRepository,
             ILaundryServiceRepository laundryServiceRepository) {
 
-        this.reviewRepository =
-                reviewRepository;
-
-        this.studentRepository =
-                studentRepository;
-
-        this.laundryServiceRepository =
-                laundryServiceRepository;
+        this.reviewRepository = reviewRepository;
+        this.studentRepository = studentRepository;
+        this.laundryServiceRepository = laundryServiceRepository;
     }
 
     @Override
@@ -51,8 +47,7 @@ public class ReviewServiceImpl
             Long studentId,
             Long serviceId,
             int rating,
-            String comment,
-            LocalDateTime date) {
+            String comment) {
 
         Student student =
                 studentRepository.findById(studentId)
@@ -60,8 +55,7 @@ public class ReviewServiceImpl
                                 new NoSuchElementException(
                                         "Student not found with id: "
                                                 + studentId
-                                )
-                        );
+                                ));
 
         LaundryService laundryService =
                 laundryServiceRepository.findById(serviceId)
@@ -69,16 +63,14 @@ public class ReviewServiceImpl
                                 new NoSuchElementException(
                                         "LaundryService not found with id: "
                                                 + serviceId
-                                )
-                        );
+                                ));
 
         Review review =
                 ReviewFactory.create(
                         student,
                         laundryService,
                         rating,
-                        comment,
-                        date
+                        comment
                 );
 
         return reviewRepository.save(review);
@@ -97,8 +89,7 @@ public class ReviewServiceImpl
     public List<Review> getReviewsByStudent(
             Long studentId) {
 
-        return reviewRepository
-                .findByStudentStudentId(studentId);
+        return reviewRepository.findByStudent_Id(studentId);
     }
 
     @Override
@@ -107,7 +98,7 @@ public class ReviewServiceImpl
             Long serviceId) {
 
         return reviewRepository
-                .findByLaundryServiceServiceId(serviceId);
+                .findByLaundryService_Id(serviceId);
     }
 
     @Override
@@ -119,7 +110,8 @@ public class ReviewServiceImpl
 
     @Override
     @Transactional
-    public void deleteReview(Long reviewId) {
+    public void deleteReview(
+            Long reviewId) {
 
         Review review =
                 getReviewOrThrow(reviewId);
@@ -135,7 +127,10 @@ public class ReviewServiceImpl
                         new NoSuchElementException(
                                 "Review not found with id: "
                                         + reviewId
-                        )
-                );
+                        ));
+    }
+
+    public Review createReview(long l, long l1, int i, String s, LocalDateTime date) {
+        return null;
     }
 }
