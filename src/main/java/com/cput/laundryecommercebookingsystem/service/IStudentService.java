@@ -11,7 +11,7 @@ import java.util.Optional;
  * Date: 28 July 2026
  */
 
-public interface StudentService {
+public interface IStudentService {
 
     Student createStudent(Student student);
 
