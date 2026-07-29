@@ -11,7 +11,7 @@ import java.util.List;
  * 28 July 2026
  */
 
-public interface IReviewRepository {
+public interface IReviewRepository
      extends JpaRepository<Review, Long> {
 
         List<Review> findByStudentStudentId(
@@ -26,4 +26,4 @@ public interface IReviewRepository {
         int rating
     );
     }
-}
+

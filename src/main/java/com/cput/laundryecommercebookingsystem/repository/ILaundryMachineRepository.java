@@ -1,6 +1,7 @@
 package com.cput.laundryecommercebookingsystem.repository;
 
 import com.cput.laundryecommercebookingsystem.domain.LaundryMachine;
+import com.cput.laundryecommercebookingsystem.domain.enums.MachineStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -12,8 +13,9 @@ import java.util.Optional;
  * 28 July 2026
  */
 
-public interface ILaundryMachineRepository {
+public interface ILaundryMachineRepository
     extends JpaRepository<LaundryMachine, Long> {
+
 
         Optional<LaundryMachine> findByMachineNumber(
                 String machineNumber
@@ -27,4 +29,4 @@ public interface ILaundryMachineRepository {
                 String type
     );
     }
-}
+
