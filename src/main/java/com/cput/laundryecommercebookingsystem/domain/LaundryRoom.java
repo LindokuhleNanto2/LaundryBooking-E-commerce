@@ -16,7 +16,7 @@ import java.util.Objects;
 @Table(name = "laundry_rooms")
 public class LaundryRoom {
 
-    // roomId : int (PK)
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "room_id", nullable = false, updatable = false)
@@ -56,13 +56,8 @@ public class LaundryRoom {
         this.description = builder.description;
         this.isActive = builder.isActive;
         this.machines = new ArrayList<>(builder.machines);
-        // Each LaundryMachine already carries its LaundryRoom reference,
-        // set immutably via LaundryMachine.Builder - no back-assignment needed here.
-    }
 
-    // ---------------------------------------------------------------
-    // Getters (no public setters)
-    // ---------------------------------------------------------------
+    }
 
     public int getRoomId() {
         return roomId;
@@ -88,17 +83,10 @@ public class LaundryRoom {
         return isActive;
     }
 
-    /**
-     * Returns an unmodifiable view of the machines to prevent external
-     * code from mutating the internal collection directly.
-     */
     public List<LaundryMachine> getMachines() {
         return Collections.unmodifiableList(machines);
     }
 
-    // ---------------------------------------------------------------
-    // Domain behaviour (replaces public setters)
-    // ---------------------------------------------------------------
 
     public void addRoom() {
         if (this.isActive) {
@@ -136,9 +124,7 @@ public class LaundryRoom {
         if (this.machines.size() >= this.capacity) {
             throw new IllegalStateException("Room is at full capacity.");
         }
-        // LaundryMachine already carries its LaundryRoom reference,
-        // set immutably via LaundryMachine.Builder - this just keeps
-        // the in-memory collection on this side in sync.
+
         this.machines.add(machine);
     }
 
