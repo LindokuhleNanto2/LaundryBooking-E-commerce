@@ -3,7 +3,7 @@ package com.cput.laundryecommercebookingsystem.service.impl;
 import com.cput.laundryecommercebookingsystem.domain.Order;
 import com.cput.laundryecommercebookingsystem.domain.OrderItem;
 import com.cput.laundryecommercebookingsystem.domain.Product;
-import com.cput.laundryecommercebookingsystem.repository.OrderItemRepository;
+import com.cput.laundryecommercebookingsystem.repository.IOrderItemRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -24,7 +24,7 @@ import static org.mockito.Mockito.*;
 public class OrderItemServiceImplTest {
 
     @Mock
-    private OrderItemRepository orderItemRepository;
+    private IOrderItemRepository IOrderItemRepository;
 
     @InjectMocks
     private OrderItemServiceImpl orderItemService;
@@ -50,20 +50,20 @@ public class OrderItemServiceImplTest {
     @Test
     void createOrderItem_returnsSavedOrderItem() {
 
-        when(orderItemRepository.save(any(OrderItem.class)))
+        when(IOrderItemRepository.save(any(OrderItem.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
 
         OrderItem result = orderItemService.createOrderItem(orderItem);
 
         assertNotNull(result);
         assertEquals(2, result.getQuantity());
-        verify(orderItemRepository).save(orderItem);
+        verify(IOrderItemRepository).save(orderItem);
     }
 
     @Test
     void getOrderItemById_returnsOrderItem() {
 
-        when(orderItemRepository.findById(1))
+        when(IOrderItemRepository.findById(1))
                 .thenReturn(Optional.of(orderItem));
 
         Optional<OrderItem> result = orderItemService.getOrderItemById(1);
@@ -74,7 +74,7 @@ public class OrderItemServiceImplTest {
     @Test
     void getOrderItemsByOrder_returnsList() {
 
-        when(orderItemRepository.findByOrder(order))
+        when(IOrderItemRepository.findByOrder(order))
                 .thenReturn(List.of(orderItem));
 
         List<OrderItem> result = orderItemService.getOrderItemsByOrder(order);
@@ -85,7 +85,7 @@ public class OrderItemServiceImplTest {
     @Test
     void getOrderItemsByProduct_returnsList() {
 
-        when(orderItemRepository.findByProduct(product))
+        when(IOrderItemRepository.findByProduct(product))
                 .thenReturn(List.of(orderItem));
 
         List<OrderItem> result = orderItemService.getOrderItemsByProduct(product);
@@ -96,7 +96,7 @@ public class OrderItemServiceImplTest {
     @Test
     void getAllOrderItems_returnsList() {
 
-        when(orderItemRepository.findAll())
+        when(IOrderItemRepository.findAll())
                 .thenReturn(List.of(orderItem));
 
         List<OrderItem> result = orderItemService.getAllOrderItems();
@@ -109,6 +109,6 @@ public class OrderItemServiceImplTest {
 
         orderItemService.deleteOrderItem(1);
 
-        verify(orderItemRepository).deleteById(1);
+        verify(IOrderItemRepository).deleteById(1);
     }
 }

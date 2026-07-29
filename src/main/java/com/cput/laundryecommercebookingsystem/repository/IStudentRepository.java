@@ -10,7 +10,7 @@ import java.util.Optional;
  * Date: 28 July 2026
  */
 
-public interface StudentRepository extends JpaRepository<Student, Long> {
+public interface IStudentRepository extends JpaRepository<Student, Long> {
 
     Optional<Student> findByEmail(String email);
 

@@ -1,7 +1,7 @@
 package com.cput.laundryecommercebookingsystem.service.impl;
 
 import com.cput.laundryecommercebookingsystem.domain.Student;
-import com.cput.laundryecommercebookingsystem.repository.StudentRepository;
+import com.cput.laundryecommercebookingsystem.repository.IStudentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 public class StudentServiceImplTest {
 
     @Mock
-    private StudentRepository studentRepository;
+    private IStudentRepository IStudentRepository;
 
     @InjectMocks
     private StudentServiceImpl studentService;
@@ -46,20 +46,20 @@ public class StudentServiceImplTest {
     @Test
     void createStudent_returnsSavedStudent() {
 
-        when(studentRepository.save(any(Student.class)))
+        when(IStudentRepository.save(any(Student.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
 
         Student result = studentService.createStudent(student);
 
         assertNotNull(result);
         assertEquals("Katlego", result.getFirstName());
-        verify(studentRepository).save(student);
+        verify(IStudentRepository).save(student);
     }
 
     @Test
     void getStudentById_returnsStudent() {
 
-        when(studentRepository.findById(1L))
+        when(IStudentRepository.findById(1L))
                 .thenReturn(Optional.of(student));
 
         Optional<Student> result = studentService.getStudentById(1L);
@@ -71,7 +71,7 @@ public class StudentServiceImplTest {
     @Test
     void getStudentByEmail_returnsStudent() {
 
-        when(studentRepository.findByEmail("katlegondaba08@gmail.com"))
+        when(IStudentRepository.findByEmail("katlegondaba08@gmail.com"))
                 .thenReturn(Optional.of(student));
 
         Optional<Student> result =
@@ -83,7 +83,7 @@ public class StudentServiceImplTest {
     @Test
     void getStudentByPhoneNumber_returnsStudent() {
 
-        when(studentRepository.findByPhoneNumber("0625067447"))
+        when(IStudentRepository.findByPhoneNumber("0625067447"))
                 .thenReturn(Optional.of(student));
 
         Optional<Student> result =
@@ -95,7 +95,7 @@ public class StudentServiceImplTest {
     @Test
     void getAllStudents_returnsList() {
 
-        when(studentRepository.findAll())
+        when(IStudentRepository.findAll())
                 .thenReturn(List.of(student));
 
         List<Student> students = studentService.getAllStudents();
@@ -108,6 +108,6 @@ public class StudentServiceImplTest {
 
         studentService.deleteStudent(1L);
 
-        verify(studentRepository).deleteById(1L);
+        verify(IStudentRepository).deleteById(1L);
     }
 }
