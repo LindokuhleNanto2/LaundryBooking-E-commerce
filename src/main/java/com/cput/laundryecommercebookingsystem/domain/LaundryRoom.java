@@ -3,6 +3,7 @@ package com.cput.laundryecommercebookingsystem.domain;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,7 +16,7 @@ import java.util.Objects;
 @Table(name = "laundry_rooms")
 public class LaundryRoom {
 
-    // roomId : int (PK)
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "room_id", nullable = false, updatable = false)
@@ -56,10 +57,36 @@ public class LaundryRoom {
         this.isActive = builder.isActive;
         this.machines = new ArrayList<>(builder.machines);
 
-        for (LaundryMachine machine : this.machines) {
-            machine.assignRoom(this);
-        }
     }
+
+    public int getRoomId() {
+        return roomId;
+    }
+
+    public String getRoomNumber() {
+        return roomNumber;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public List<LaundryMachine> getMachines() {
+        return Collections.unmodifiableList(machines);
+    }
+
 
     public void addRoom() {
         if (this.isActive) {
@@ -97,8 +124,8 @@ public class LaundryRoom {
         if (this.machines.size() >= this.capacity) {
             throw new IllegalStateException("Room is at full capacity.");
         }
+
         this.machines.add(machine);
-        machine.assignRoom(this);
     }
 
 
@@ -172,7 +199,7 @@ public class LaundryRoom {
             return this;
         }
 
-        public Builder addMachine(LaundryMachine) {
+        public Builder addMachine(LaundryMachine machine) {
             this.machines.add(machine);
             return this;
         }
