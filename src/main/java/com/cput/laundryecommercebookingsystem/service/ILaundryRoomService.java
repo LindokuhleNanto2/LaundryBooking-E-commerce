@@ -1,6 +1,6 @@
 package com.cput.laundryecommercebookingsystem.service;
 import com.cput.laundryecommercebookingsystem.domain.LaundryRoom;
-import com.cput.laundryecommercebookingsystem.domain.Machine;
+import com.cput.laundryecommercebookingsystem.domain.LaundryMachine;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,11 +20,13 @@ public interface ILaundryRoomService {
 
     LaundryRoom updateRoom(int roomId, String location, int capacity, String description);
 
-    LaundryRoom addMachineToRoom(int roomId, Machine machine);
+    LaundryRoom addMachineToRoom(int roomId, LaundryMachine machine);
 
     Optional<LaundryRoom> getRoomById(int roomId);
 
     List<LaundryRoom> getActiveRooms();
 
     List<LaundryRoom> getAllRooms();
+
+    boolean deleteRoom(int roomId);
 }

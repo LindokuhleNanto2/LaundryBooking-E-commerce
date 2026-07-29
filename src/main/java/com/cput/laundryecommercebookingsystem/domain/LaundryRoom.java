@@ -3,6 +3,7 @@ package com.cput.laundryecommercebookingsystem.domain;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -55,11 +56,49 @@ public class LaundryRoom {
         this.description = builder.description;
         this.isActive = builder.isActive;
         this.machines = new ArrayList<>(builder.machines);
-
-        for (LaundryMachine machine : this.machines) {
-            machine.assignRoom(this);
-        }
+        // Each LaundryMachine already carries its LaundryRoom reference,
+        // set immutably via LaundryMachine.Builder - no back-assignment needed here.
     }
+
+    // ---------------------------------------------------------------
+    // Getters (no public setters)
+    // ---------------------------------------------------------------
+
+    public int getRoomId() {
+        return roomId;
+    }
+
+    public String getRoomNumber() {
+        return roomNumber;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    /**
+     * Returns an unmodifiable view of the machines to prevent external
+     * code from mutating the internal collection directly.
+     */
+    public List<LaundryMachine> getMachines() {
+        return Collections.unmodifiableList(machines);
+    }
+
+    // ---------------------------------------------------------------
+    // Domain behaviour (replaces public setters)
+    // ---------------------------------------------------------------
 
     public void addRoom() {
         if (this.isActive) {
@@ -97,8 +136,10 @@ public class LaundryRoom {
         if (this.machines.size() >= this.capacity) {
             throw new IllegalStateException("Room is at full capacity.");
         }
+        // LaundryMachine already carries its LaundryRoom reference,
+        // set immutably via LaundryMachine.Builder - this just keeps
+        // the in-memory collection on this side in sync.
         this.machines.add(machine);
-        machine.assignRoom(this);
     }
 
 
@@ -172,7 +213,7 @@ public class LaundryRoom {
             return this;
         }
 
-        public Builder addMachine(LaundryMachine) {
+        public Builder addMachine(LaundryMachine machine) {
             this.machines.add(machine);
             return this;
         }
