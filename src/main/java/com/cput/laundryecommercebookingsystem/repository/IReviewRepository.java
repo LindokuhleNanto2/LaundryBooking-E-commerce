@@ -10,20 +10,11 @@ import java.util.List;
  * 240443608
  * 28 July 2026
  */
+public interface IReviewRepository extends JpaRepository<Review, Long> {
 
-public interface IReviewRepository {
-     extends JpaRepository<Review, Long> {
+    List<Review> findByStudentStudentId(Long studentId);
 
-        List<Review> findByStudentStudentId(
-                Long studentId
-    );
+    List<Review> findByLaundryServiceServiceId(Long serviceId);
 
-        List<Review> findByLaundryServiceServiceId(
-                Long serviceId
-    );
-
-        List<Review> findByRating(
-        int rating
-    );
-    }
+    List<Review> findByRating(int rating);
 }

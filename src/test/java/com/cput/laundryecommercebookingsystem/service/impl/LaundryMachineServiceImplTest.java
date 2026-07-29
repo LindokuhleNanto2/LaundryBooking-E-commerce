@@ -2,13 +2,15 @@ package com.cput.laundryecommercebookingsystem.service.impl;
 
 import com.cput.laundryecommercebookingsystem.domain.LaundryMachine;
 import com.cput.laundryecommercebookingsystem.domain.LaundryRoom;
-import com.cput.laundryecommercebookingsystem.domain.MachineStatus;
+import com.cput.laundryecommercebookingsystem.domain.enums.MachineStatus;
 import com.cput.laundryecommercebookingsystem.repository.ILaundryMachineRepository;
 import com.cput.laundryecommercebookingsystem.repository.ILaundryRoomRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +26,7 @@ import static org.mockito.Mockito.*;
  * 28 July 2026
  */
 
+@ExtendWith(MockitoExtension.class)
 public class LaundryMachineServiceImplTest {
 
     @Mock
@@ -54,7 +57,7 @@ public class LaundryMachineServiceImplTest {
     @Test
     void createMachine_returnsSavedLaundryMachine() {
 
-        when(laundryRoomRepository.findById(1L))
+        when(laundryRoomRepository.findById(1))
                 .thenReturn(Optional.of(laundryRoom));
 
         when(laundryMachineRepository.save(
@@ -71,23 +74,54 @@ public class LaundryMachineServiceImplTest {
                 );
 
         assertNotNull(result);
+
         assertEquals(
                 "WM-001",
                 result.getMachineNumber()
         );
+
         assertEquals(
                 "WASHER",
                 result.getType()
         );
+
         assertEquals(
                 MachineStatus.AVAILABLE,
                 result.getStatus()
         );
 
+        assertEquals(
+                laundryRoom,
+                result.getLaundryRoom()
+        );
+
         verify(laundryRoomRepository)
-                .findById(1L);
+                .findById(1);
 
         verify(laundryMachineRepository)
+                .save(any(LaundryMachine.class));
+    }
+
+    @Test
+    void createMachine_throwsExceptionWhenLaundryRoomNotFound() {
+
+        when(laundryRoomRepository.findById(1))
+                .thenReturn(Optional.empty());
+
+        assertThrows(
+                RuntimeException.class,
+                () -> laundryMachineService.createMachine(
+                        "WM-001",
+                        "WASHER",
+                        MachineStatus.AVAILABLE,
+                        1L
+                )
+        );
+
+        verify(laundryRoomRepository)
+                .findById(1);
+
+        verify(laundryMachineRepository, never())
                 .save(any(LaundryMachine.class));
     }
 
@@ -101,10 +135,26 @@ public class LaundryMachineServiceImplTest {
                 laundryMachineService.getMachineById(1L);
 
         assertTrue(result.isPresent());
+
         assertEquals(
                 "WM-001",
                 result.get().getMachineNumber()
         );
+
+        verify(laundryMachineRepository)
+                .findById(1L);
+    }
+
+    @Test
+    void getMachineById_returnsEmptyWhenMachineNotFound() {
+
+        when(laundryMachineRepository.findById(1L))
+                .thenReturn(Optional.empty());
+
+        Optional<LaundryMachine> result =
+                laundryMachineService.getMachineById(1L);
+
+        assertTrue(result.isEmpty());
 
         verify(laundryMachineRepository)
                 .findById(1L);
@@ -122,6 +172,7 @@ public class LaundryMachineServiceImplTest {
                         .getMachineByNumber("WM-001");
 
         assertTrue(result.isPresent());
+
         assertEquals(
                 "WM-001",
                 result.get().getMachineNumber()
@@ -144,7 +195,11 @@ public class LaundryMachineServiceImplTest {
                                 MachineStatus.AVAILABLE
                         );
 
-        assertEquals(1, result.size());
+        assertEquals(
+                1,
+                result.size()
+        );
+
         assertEquals(
                 MachineStatus.AVAILABLE,
                 result.get(0).getStatus()
@@ -163,7 +218,10 @@ public class LaundryMachineServiceImplTest {
         List<LaundryMachine> result =
                 laundryMachineService.getAllMachines();
 
-        assertEquals(1, result.size());
+        assertEquals(
+                1,
+                result.size()
+        );
 
         verify(laundryMachineRepository)
                 .findAll();
@@ -187,6 +245,7 @@ public class LaundryMachineServiceImplTest {
                 );
 
         assertNotNull(result);
+
         assertEquals(
                 MachineStatus.IN_USE,
                 result.getStatus()
@@ -200,6 +259,27 @@ public class LaundryMachineServiceImplTest {
     }
 
     @Test
+    void updateMachineStatus_throwsExceptionWhenMachineNotFound() {
+
+        when(laundryMachineRepository.findById(1L))
+                .thenReturn(Optional.empty());
+
+        assertThrows(
+                RuntimeException.class,
+                () -> laundryMachineService.updateMachineStatus(
+                        1L,
+                        MachineStatus.IN_USE
+                )
+        );
+
+        verify(laundryMachineRepository)
+                .findById(1L);
+
+        verify(laundryMachineRepository, never())
+                .save(any(LaundryMachine.class));
+    }
+
+    @Test
     void deleteMachine_callsRepository() {
 
         when(laundryMachineRepository.findById(1L))
@@ -208,7 +288,27 @@ public class LaundryMachineServiceImplTest {
         laundryMachineService.deleteMachine(1L);
 
         verify(laundryMachineRepository)
+                .findById(1L);
+
+        verify(laundryMachineRepository)
                 .delete(laundryMachine);
     }
-}
+
+    @Test
+    void deleteMachine_throwsExceptionWhenMachineNotFound() {
+
+        when(laundryMachineRepository.findById(1L))
+                .thenReturn(Optional.empty());
+
+        assertThrows(
+                RuntimeException.class,
+                () -> laundryMachineService.deleteMachine(1L)
+        );
+
+        verify(laundryMachineRepository)
+                .findById(1L);
+
+        verify(laundryMachineRepository, never())
+                .delete(any(LaundryMachine.class));
+    }
 }
