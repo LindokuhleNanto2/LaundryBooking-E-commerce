@@ -13,7 +13,7 @@ import java.util.Optional;
  * Date: 28 July 2026
  */
 
-public interface OrderItemService {
+public interface IOrderItemService {
 
     OrderItem createOrderItem(OrderItem orderItem);
 

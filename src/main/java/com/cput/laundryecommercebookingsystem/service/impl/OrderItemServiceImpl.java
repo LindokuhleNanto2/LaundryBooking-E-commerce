@@ -3,8 +3,8 @@ package com.cput.laundryecommercebookingsystem.service.impl;
 import com.cput.laundryecommercebookingsystem.domain.Order;
 import com.cput.laundryecommercebookingsystem.domain.OrderItem;
 import com.cput.laundryecommercebookingsystem.domain.Product;
-import com.cput.laundryecommercebookingsystem.repository.OrderItemRepository;
-import com.cput.laundryecommercebookingsystem.service.OrderItemService;
+import com.cput.laundryecommercebookingsystem.repository.IOrderItemRepository;
+import com.cput.laundryecommercebookingsystem.service.IOrderItemService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,56 +18,56 @@ import java.util.Optional;
  */
 
 @Service
-public class OrderItemServiceImpl implements OrderItemService {
+public class OrderItemServiceImpl implements IOrderItemService {
 
-    private final OrderItemRepository orderItemRepository;
+    private final IOrderItemRepository IOrderItemRepository;
 
-    public OrderItemServiceImpl(OrderItemRepository orderItemRepository) {
-        this.orderItemRepository = orderItemRepository;
+    public OrderItemServiceImpl(IOrderItemRepository IOrderItemRepository) {
+        this.IOrderItemRepository = IOrderItemRepository;
     }
 
     @Override
     @Transactional
     public OrderItem createOrderItem(OrderItem orderItem) {
-        return orderItemRepository.save(orderItem);
+        return IOrderItemRepository.save(orderItem);
     }
 
     @Override
     @Transactional
     public OrderItem updateOrderItem(OrderItem orderItem) {
-        if (!orderItemRepository.existsById(orderItem.getOrderItemId())) {
+        if (!IOrderItemRepository.existsById(orderItem.getOrderItemId())) {
             throw new NoSuchElementException("OrderItem not found.");
         }
-        return orderItemRepository.save(orderItem);
+        return IOrderItemRepository.save(orderItem);
     }
 
     @Override
     @Transactional
     public void deleteOrderItem(int orderItemId) {
-        orderItemRepository.deleteById(orderItemId);
+        IOrderItemRepository.deleteById(orderItemId);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Optional<OrderItem> getOrderItemById(int orderItemId) {
-        return orderItemRepository.findById(orderItemId);
+        return IOrderItemRepository.findById(orderItemId);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<OrderItem> getOrderItemsByOrder(Order order) {
-        return orderItemRepository.findByOrder(order);
+        return IOrderItemRepository.findByOrder(order);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<OrderItem> getOrderItemsByProduct(Product product) {
-        return orderItemRepository.findByProduct(product);
+        return IOrderItemRepository.findByProduct(product);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<OrderItem> getAllOrderItems() {
-        return orderItemRepository.findAll();
+        return IOrderItemRepository.findAll();
     }
 }

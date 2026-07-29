@@ -12,21 +12,11 @@ import java.util.Optional;
  * 240443608
  * 28 July 2026
  */
+public interface ILaundryMachineRepository extends JpaRepository<LaundryMachine, Long> {
 
-public interface ILaundryMachineRepository
-    extends JpaRepository<LaundryMachine, Long> {
+    Optional<LaundryMachine> findByMachineNumber(String machineNumber);
 
+    List<LaundryMachine> findByStatus(MachineStatus status);
 
-        Optional<LaundryMachine> findByMachineNumber(
-                String machineNumber
-    );
-
-        List<LaundryMachine> findByStatus(
-                MachineStatus status
-    );
-
-        List<LaundryMachine> findByType(
-                String type
-    );
-    }
-
+    List<LaundryMachine> findByType(String type);
+}
